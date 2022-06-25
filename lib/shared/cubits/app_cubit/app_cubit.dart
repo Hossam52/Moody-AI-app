@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moody_app/domain/models/user_model.dart';
 import 'package:moody_app/modules/home/entertainment_screen/entertainment_screen.dart';
 import 'package:moody_app/modules/home/inspiration_screen/inspiration_screen.dart';
-import 'package:moody_app/modules/home/store_screen/store_screen.dart';
+import 'package:moody_app/modules/home/movies_screen/movies_screen.dart';
 import 'package:moody_app/modules/settings/settings_screen.dart';
 
 part 'app_state.dart';
@@ -20,8 +20,7 @@ class AppCubit extends Cubit<AppState> {
   List<Widget> screens = [
     const EntertainmentScreen(),
     const InspirationScreen(),
-    StoreScreen(),
-    const Text('data'),
+    const MoviesScreen(),
     const SettingScreen(),
   ];
   int initialScreen = 0;

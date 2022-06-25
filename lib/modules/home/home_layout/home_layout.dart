@@ -50,12 +50,6 @@ class HomeLayout extends StatelessWidget {
                   BottomNavigationBarItem(
                       label: '',
                       icon: Icon(
-                        Icons.store,
-                        size: 30.sp,
-                      )),
-                  BottomNavigationBarItem(
-                      label: '',
-                      icon: Icon(
                         FontAwesomeIcons.film,
                         size: 30.sp,
                       )),
