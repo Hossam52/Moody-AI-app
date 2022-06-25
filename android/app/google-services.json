@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "233865090118",
+    "project_id": "moody-22da3",
+    "storage_bucket": "moody-22da3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:233865090118:android:aa42bcbfa7f8430b0d2647",
+        "android_client_info": {
+          "package_name": "com.moody.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "233865090118-349dr5c25lpgsmcs9r6sgj2e7jhch2e0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moody.app",
+            "certificate_hash": "6b43fc2197f61dab9c6a545afe91af937cc34f14"
+          }
+        },
+        {
+          "client_id": "233865090118-deqags0ubr8h208da1p474g4libkhq0u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbHwonYlMBIw4D7ddZqM2GdTSsxRYF1X4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "233865090118-deqags0ubr8h208da1p474g4libkhq0u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
