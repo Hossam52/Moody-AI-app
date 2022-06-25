@@ -1,6 +1,6 @@
 part of './fire_firestore.dart';
 
-int paginationSize = 3;
+int paginationSize = 10;
 
 class InspirationServices {
   InspirationServices._();

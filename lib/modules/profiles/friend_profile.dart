@@ -123,8 +123,7 @@ class _FriendProfileState extends State<FriendProfile> {
                           else
                             DefaultTextButton(
                               onPressed: () async {
-                                await profileCubit.followFriend(
-                                    context, widget.userId);
+                                await profileCubit.followFriend(context, user);
                               },
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 20),

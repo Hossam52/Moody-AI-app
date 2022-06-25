@@ -18,14 +18,14 @@ class InspirationData {
     final allDocs = allData.docs.map((e) {
       return Inspiration.fromMap(e.data());
     }).toList();
-    if (allDocs.length != paginationSize) _isLastPage = true;
+    if (allDocs.isEmpty || allDocs.length != paginationSize) _isLastPage = true;
     if (_inspirationItems == null) {
       _inspirationItems = allDocs;
     } else {
       _inspirationItems!.addAll(allDocs);
     }
     //For saving last item and use in pagination
-    _lastRecentInspiration = allData.docs.last;
+    if (allDocs.isNotEmpty) _lastRecentInspiration = allData.docs.last;
   }
 
   void insertItem(Inspiration post, int position) {

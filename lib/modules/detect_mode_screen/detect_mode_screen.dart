@@ -47,7 +47,7 @@ class DetectModeScreen extends StatelessWidget {
                     child: Text(
                       'Let\'s get to know your mode',
                       style: StyleManager.primaryTextStyle(
-                          fontSize: FontSize.s24,
+                          fontSize: FontSize.s20,
                           fontWeight: FontWeight.w700,
                           color: ColorManager.white),
                     ),
@@ -67,7 +67,28 @@ class DetectModeScreen extends StatelessWidget {
                               image!,
                               fit: BoxFit.cover,
                             )
-                          : null,
+                          : Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                Opacity(
+                                  opacity: 0.8,
+                                  child: Image.asset(
+                                    'assets/images/question.jpg',
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                                const Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Text(
+                                    'Click here',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                )
+                              ],
+                            ),
                       decoration: BoxDecoration(
                         color: ColorManager.white,
                         borderRadius: BorderRadius.circular(10.r),
@@ -87,26 +108,24 @@ class DetectModeScreen extends StatelessWidget {
                                     builder: (_) => const HomeLayout()));
                           }
                         },
-                        builder: (context, state) 
-                        {
-                          return
-                          state is DetectModeLoading? const LoadingWidget():DefaultTextButton(
-                              onPressed: () 
-                              {
-                                if (image != null) 
-                                {
-                                  DetectModeCubit.get(context)
-                                      .detectMode(image!);
-                                } else {
-                                  showSnackBar(
-                                      context: context,
-                                      text:
-                                          'Please Enter Your Image To Detct Your Mode',
-                                      backgroundColor: Colors.red);
-                                }
-                              },
-                              colorButton: ColorManager.white,
-                              title: 'Go');
+                        builder: (context, state) {
+                          return state is DetectModeLoading
+                              ? const LoadingWidget()
+                              : DefaultTextButton(
+                                  onPressed: () {
+                                    if (image != null) {
+                                      DetectModeCubit.get(context)
+                                          .detectMode(image!);
+                                    } else {
+                                      showSnackBar(
+                                          context: context,
+                                          text:
+                                              'Please Enter Your Image To Detct Your Mode',
+                                          backgroundColor: Colors.red);
+                                    }
+                                  },
+                                  colorButton: ColorManager.white,
+                                  title: 'Go');
                         },
                       ),
                     ),

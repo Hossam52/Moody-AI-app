@@ -36,6 +36,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
       emit(GetPostsSuccessState());
     } catch (e) {
       emit(GetPostsErrorState(error: e.toString()));
+      rethrow;
     }
   }
 
@@ -79,15 +80,15 @@ class ProfileCubit extends Cubit<ProfileStates> {
     }
   }
 
-  Future<void> followFriend(BuildContext context, String friendId) async {
+  Future<void> followFriend(BuildContext context, UserModel friend) async {
     try {
       final user = AppCubit.get(context).getUser;
       emit(FollowFriendLoadingState());
       final friendPreview =
-          FollowingPreview(id: friendId, name: 'name2', image: 'image2');
+          FollowingPreview(id: friend.id, name: friend.name, image: 'image2');
       await _firestore.profileServices.followFriend(
           myProfileId: user.id,
-          friendId: friendId,
+          friendId: friend.id,
           followingPersonPreview: friendPreview);
 
       user.usersIdFollowing.add(friendPreview);

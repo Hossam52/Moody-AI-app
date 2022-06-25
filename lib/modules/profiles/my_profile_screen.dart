@@ -88,43 +88,45 @@ class MyProfileScreen extends StatelessWidget {
                                   'assets/images/settings/profile_setting.svg'),
                           divider,
                           sizedBox,
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Following',
-                                    style: TextStyle(
-                                        color: ColorManager.blackPosts),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      navigateTo(
-                                          context, const AllFollowingScreen());
-                                    },
-                                    child: const Text('All'),
-                                  ),
-                                ],
-                              ),
-                              sizedBox,
-                              SizedBox(
-                                height: getHeightFraction(context, 0.15),
-                                child: ListView.separated(
-                                  separatorBuilder: (_, index) => SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  itemBuilder: (_, index) => FollowingListItem(
-                                      user: followingusers[index]),
-                                  itemCount: followingusers.length,
-                                  scrollDirection: Axis.horizontal,
+                          if (followingusers.isNotEmpty)
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Following',
+                                      style: TextStyle(
+                                          color: ColorManager.blackPosts),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        navigateTo(context,
+                                            const AllFollowingScreen());
+                                      },
+                                      child: const Text('All'),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
-                          divider,
+                                sizedBox,
+                                SizedBox(
+                                  height: getHeightFraction(context, 0.15),
+                                  child: ListView.separated(
+                                    separatorBuilder: (_, index) => SizedBox(
+                                      width: 10.w,
+                                    ),
+                                    itemBuilder: (_, index) =>
+                                        FollowingListItem(
+                                            user: followingusers[index]),
+                                    itemCount: followingusers.length,
+                                    scrollDirection: Axis.horizontal,
+                                  ),
+                                ),
+                                divider,
+                              ],
+                            ),
                           Align(
                             alignment: Alignment.topLeft,
                             child: Text(

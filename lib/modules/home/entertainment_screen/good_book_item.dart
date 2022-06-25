@@ -43,54 +43,79 @@ class GoodBookItem extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                padding: EdgeInsetsDirectional.only(
-                    end: AppSizes.sizew10, top: AppSizes.sizeh10),
-                child: Column(
+                padding: EdgeInsetsDirectional.only(top: AppSizes.sizeh10),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Flexible(
-                            child: Text(
-                              book.title,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: StyleManager.primaryTextStyle(
-                                  fontSize: FontSize.s20,
-                                  fontWeight: FontWeightManager.medium,
-                                  color: ColorManager.white),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    book.title,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: StyleManager.primaryTextStyle(
+                                        fontSize: FontSize.s18,
+                                        fontWeight: FontWeightManager.medium,
+                                        color: ColorManager.white),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5.h,
+                                ),
+                                SizedBox(
+                                  width: 200.w,
+                                  child: Text(
+                                    book.author,
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      fontSize: FontSize.s18,
+                                      fontWeight: FontWeightManager.regular,
+                                      color: ColorManager.grey,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          SizedBox(
-                            height: 5.h,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              SizedBox(
-                                width: 200.w,
-                                child: Text(
-                                  book.author,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                    fontSize: FontSize.s18,
-                                    fontWeight: FontWeightManager.regular,
-                                    color: ColorManager.grey,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ),
-                              Flexible(
-                                child: IconButton(
-                                  onPressed: () {
-                                    book.addToFavourite();
-                                  },
-                                  icon: Icon(
-                                    Icons.favorite,
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.star,
+                                    color: Colors.yellow,
                                     size: AppSizes.iconSize25,
-                                    color:
-                                        book.isFav ? Colors.red : Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 15.w,
+                                  ),
+                                  Text(
+                                    book.rate.toStringAsFixed(1),
+                                    style: StyleManager.primaryTextStyle(
+                                        fontSize: FontSize.s16,
+                                        fontWeight: FontWeightManager.regular,
+                                        color: ColorManager.white),
+                                  )
+                                ],
+                              ),
+                              Card(
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 8.h, horizontal: 8.w),
+                                  child: Text(
+                                    book.language,
+                                    style: StyleManager.primaryTextStyle(
+                                        fontSize: FontSize.s20,
+                                        fontWeight: FontWeight.w700,
+                                        color: ColorManager.black),
                                   ),
                                 ),
                               ),
@@ -99,42 +124,15 @@ class GoodBookItem extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.star,
-                              color: Colors.yellow,
-                              size: AppSizes.iconSize25,
-                            ),
-                            SizedBox(
-                              width: 15.w,
-                            ),
-                            Text(
-                              book.rate.toStringAsFixed(1),
-                              style: StyleManager.primaryTextStyle(
-                                  fontSize: FontSize.s16,
-                                  fontWeight: FontWeightManager.regular,
-                                  color: ColorManager.white),
-                            )
-                          ],
-                        ),
-                        Card(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 8.h, horizontal: 8.w),
-                            child: Text(
-                              book.language,
-                              style: StyleManager.primaryTextStyle(
-                                  fontSize: FontSize.s20,
-                                  fontWeight: FontWeight.w700,
-                                  color: ColorManager.black),
-                            ),
-                          ),
-                        ),
-                      ],
+                    IconButton(
+                      onPressed: () {
+                        book.addToFavourite();
+                      },
+                      icon: Icon(
+                        Icons.favorite,
+                        size: AppSizes.iconSize25,
+                        color: book.isFav ? Colors.red : Colors.white,
+                      ),
                     ),
                   ],
                 ),

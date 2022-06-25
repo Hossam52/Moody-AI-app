@@ -17,14 +17,17 @@ class MoviesScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         titleSpacing: -10.w,
-        leading: BackButton(color: ColorManager.black,onPressed: ()=>Navigator.pop(context),),
+        leading: BackButton(
+          color: ColorManager.black,
+          onPressed: () => Navigator.pop(context),
+        ),
         title: Text(
           'Movies',
           maxLines: 2,
           style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.w500,
-              fontSize: 34.sp),
+              fontSize: 22.sp),
         ),
         backgroundColor: Colors.white,
         elevation: 0,
@@ -33,8 +36,7 @@ class MoviesScreen extends StatelessWidget {
         create: (context) => MoviesCubit()..getAllMovies(),
         child: BlocBuilder<MoviesCubit, MoviesState>(
           builder: (context, state) {
-            if (state is MoviesSuccess) 
-            {
+            if (state is MoviesSuccess) {
               var cubit = MoviesCubit.get(context);
               return ListView.separated(
                   padding: EdgeInsets.all(15.0.r),

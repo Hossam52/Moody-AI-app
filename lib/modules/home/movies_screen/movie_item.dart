@@ -63,7 +63,7 @@ class MovieItem extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 24.sp,
+                              fontSize: 20.sp,
                             ),
                           ),
                           SizedBox(
@@ -77,6 +77,8 @@ class MovieItem extends StatelessWidget {
                                   children: [
                                     Text(
                                       movie.category,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         color: Colors.grey[400],
                                         fontSize: 18.sp,
