@@ -108,29 +108,38 @@ class _FriendProfileState extends State<FriendProfile> {
                           ),
                           sizedBox,
                           if (isFollowed)
-                            DefaultTextButtonWithIcon(
-                              onPressed: () async {
-                                await profileCubit.unfollwFriend(
-                                    context, widget.userId);
-                              },
-                              iconData: Icons.done,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              colorButton: ColorManager.blackPosts,
-                              title: 'Followed',
-                              textColor: ColorManager.white,
-                            )
+                            state is FollowFriendLoadingState ||
+                                    state is UnFollowLoadingState
+                                ? const CircularProgressIndicator()
+                                : DefaultTextButtonWithIcon(
+                                    onPressed: () async {
+                                      await profileCubit.unfollwFriend(
+                                          context, widget.userId);
+                                    },
+                                    iconData: Icons.done,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    colorButton: ColorManager.blackPosts,
+                                    title: 'Followed',
+                                    textColor: ColorManager.white,
+                                  )
                           else
-                            DefaultTextButton(
-                              onPressed: () async {
-                                await profileCubit.followFriend(context, user);
-                              },
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              colorButton: ColorManager.blackPosts,
-                              title: 'Follow',
-                              textColor: ColorManager.white,
-                            ),
+                            state is FollowFriendLoadingState ||
+                                    state is UnFollowLoadingState
+                                ? const CircularProgressIndicator()
+                                : DefaultTextButton(
+                                    onPressed: () async {
+                                      if (state is FollowFriendLoadingState ||
+                                          state is UnFollowLoadingState) return;
+                                      await profileCubit.followFriend(
+                                          context, user);
+                                    },
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    colorButton: ColorManager.blackPosts,
+                                    title: 'Follow',
+                                    textColor: ColorManager.white,
+                                  ),
                           sizedBox,
                           Divider(
                             thickness: 1,

@@ -4,12 +4,15 @@ import 'package:moody_app/modules/auth/login/login_screen.dart';
 import 'package:moody_app/modules/detect_mode_screen/detect_mode_screen.dart';
 import 'package:moody_app/modules/home/movies_screen/movie_page.dart';
 import 'package:moody_app/modules/profiles/my_profile_screen.dart';
+import 'package:moody_app/modules/settings/call_us_screen.dart';
+import 'package:moody_app/modules/settings/profile_settings.dart';
 import 'package:moody_app/presentation/resources/assets_manager.dart';
 import 'package:moody_app/presentation/resources/color_manager.dart';
 import 'package:moody_app/presentation/resources/navigation_manager.dart';
 import 'package:moody_app/shared/cubits/app_cubit/app_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:moody_app/shared/network/firebase_services/services/fire_auth.dart/fire_auth.dart';
+import 'package:moody_app/shared/network/locale/cache_helper.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -61,7 +64,9 @@ class SettingScreen extends StatelessWidget {
                     imagePath: 'assets/images/settings/edit_emergency.svg'),
                 SettingItem(
                     title: 'Profile settings',
-                    onPressed: () {},
+                    onPressed: () {
+                      navigateTo(context, const ProfileSettings());
+                    },
                     imagePath: 'assets/images/settings/profile_setting.svg'),
                 Divider(
                   color: ColorManager.settingItemColor,
@@ -75,11 +80,15 @@ class SettingScreen extends StatelessWidget {
                 ),
                 SettingItem(
                     title: 'Settings',
-                    onPressed: () {},
+                    onPressed: () {
+                      navigateTo(context, const ProfileSettings());
+                    },
                     imagePath: 'assets/images/settings/settings.svg'),
                 SettingItem(
                     title: 'Call Us',
-                    onPressed: () {},
+                    onPressed: () {
+                      navigateTo(context, const CallUsScreen());
+                    },
                     imagePath: 'assets/images/settings/call_us.svg'),
                 Divider(
                   color: ColorManager.settingItemColor,
@@ -88,6 +97,7 @@ class SettingScreen extends StatelessWidget {
                     title: 'Log out',
                     onPressed: () async {
                       await FireAuth.instance.logoutUser();
+                      CacheHelper.removeData(key: 'login');
                       navigateAndFinish(context, LoginScreen());
                     },
                     imagePath: 'assets/images/settings/logout.svg'),

@@ -34,6 +34,32 @@ class FireAuth {
     }
   }
 
+  Future<void> updateUserData(
+      {String? newName, String? newPassword, String? newEmail}) async {
+    final user = _auth.currentUser;
+    if (newEmail != null) {
+      try {
+        await user?.updateEmail(newEmail);
+      } catch (e) {
+        rethrow;
+      }
+    }
+    if (newName != null) {
+      try {
+        await user?.updateDisplayName(newName);
+      } catch (e) {
+        rethrow;
+      }
+    }
+    if (newPassword != null) {
+      try {
+        await user?.updatePassword(newPassword);
+      } catch (e) {
+        rethrow;
+      }
+    }
+  }
+
   Future<void> logoutUser() async {
     await _auth.signOut();
   }

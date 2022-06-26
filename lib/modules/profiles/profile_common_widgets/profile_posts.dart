@@ -18,7 +18,7 @@ class ProfilePosts extends StatelessWidget {
           return const LoadingWidget();
         }
         if (posts.isEmpty) {
-          return  Center(
+          return Center(
             child: Text(
               'No posts',
               style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold),
@@ -26,14 +26,15 @@ class ProfilePosts extends StatelessWidget {
           );
         } else {
           return ListView.separated(
-            separatorBuilder: (_, index) =>  SizedBox(
+            separatorBuilder: (_, index) => SizedBox(
               height: 10.h,
             ),
             primary: false,
             shrinkWrap: true,
             itemCount: posts.length,
             itemBuilder: (_, index) => PostItem(
-              index: 0,
+              canViewProfile: false,
+              index: index + 1,
               onToggleLike: () {
                 profileCubit.profilePostToggleLike(context, posts[index].id!);
               },

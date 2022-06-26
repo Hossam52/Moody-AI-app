@@ -9,15 +9,17 @@ import 'package:moody_app/shared/cubits/app_cubit/app_cubit.dart';
 import 'package:moody_app/shared/helper/helper_methods.dart';
 
 class PostItem extends StatelessWidget {
-  const PostItem(
-      {Key? key,
-      required this.index,
-      required this.inspirationItem,
-      required this.onToggleLike})
-      : super(key: key);
+  const PostItem({
+    Key? key,
+    required this.index,
+    required this.inspirationItem,
+    required this.onToggleLike,
+    this.canViewProfile = true,
+  }) : super(key: key);
   final int index;
   final Inspiration inspirationItem;
   final VoidCallback onToggleLike;
+  final bool canViewProfile;
   isPostLikedByMe(BuildContext context) {
     final user = AppCubit.get(context).getUser;
     return user.containsInLikes(inspirationItem.id!);
@@ -34,7 +36,9 @@ class PostItem extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  navigateToProfile(context, inspirationItem.userId);
+                  if (canViewProfile) {
+                    navigateToProfile(context, inspirationItem.userId);
+                  }
                 },
                 child: CircleAvatar(
                   backgroundImage: const AssetImage(AssetsManager.avater),

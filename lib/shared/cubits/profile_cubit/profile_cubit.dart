@@ -92,6 +92,8 @@ class ProfileCubit extends Cubit<ProfileStates> {
           followingPersonPreview: friendPreview);
 
       user.usersIdFollowing.add(friendPreview);
+      userModel!.followersCount++;
+
       emit(FollowFriendSuccessState());
     } catch (e) {
       emit(FollowFriendErrorState(error: e.toString()));
@@ -105,6 +107,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
       emit(UnFollowLoadingState());
       await _firestore.profileServices
           .unFollowFriend(myProfileId: user.id, friendId: friendId);
+      userModel!.followersCount--;
       user.usersIdFollowing.removeWhere((e) => e.id == friendId);
 
       emit(UnFollowSuccessState());

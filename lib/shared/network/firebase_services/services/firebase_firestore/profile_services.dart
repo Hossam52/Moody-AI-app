@@ -25,7 +25,7 @@ class ProfileServices {
         .doc(uid)
         .collection(FireStorePaths.myFollowing)
         .get();
-  
+
     if (!user.exists) throw 'This user not exist';
     final finalMap = user.data()!;
 
@@ -95,5 +95,12 @@ class ProfileServices {
         .where('usersIdFollowing', arrayContains: friendIds)
         .get();
     return allData;
+  }
+
+  Future<void> updateUserData(String id, {String? email, String? name}) async {
+    await _firestore.collection(FireStorePaths.usersPath).doc(id).update({
+      if (email != null) 'email': email,
+      if (name != null) 'name': name,
+    });
   }
 }

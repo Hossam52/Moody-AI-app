@@ -40,6 +40,8 @@ class RegisterScreen extends StatelessWidget {
       backgroundColor: ColorManager.black,
       appBar: AppBar(
         backgroundColor: ColorManager.black,
+        title: const Text('New user'),
+        centerTitle: true,
       ),
       body: BlocProvider(
         create: (context) => AuthCubit(),

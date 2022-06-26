@@ -21,24 +21,24 @@ class AuthCubit extends Cubit<AuthStates> {
   final auth = FireAuth.instance;
   final _firestoreRepo = FireStoreRepo.instance;
   Future<void> login({required String email, required String password}) async {
-    emit(LoginLoadingState());
-    final user =
-        await auth.signInEmailAndPassword(email: email, password: password);
-    final userMap =
-        await _firestoreRepo.profileServices.getUserData(uid: user.uid);
-    final loggedInUser = UserModel.fromMap(userMap);
-    CacheHelper.saveDate(key: 'login', value: true);
-    CacheHelper.saveDate(key: 'uid', value: user.uid);
-    emit(LoginSuccessState(user: loggedInUser));
-    try {} catch (e) {
+    try {
+      emit(LoginLoadingState());
+      final user =
+          await auth.signInEmailAndPassword(email: email, password: password);
+      final userMap =
+          await _firestoreRepo.profileServices.getUserData(uid: user.uid);
+      final loggedInUser = UserModel.fromMap(userMap);
+      CacheHelper.saveDate(key: 'login', value: true);
+      CacheHelper.saveDate(key: 'uid', value: user.uid);
+      emit(LoginSuccessState(user: loggedInUser));
+    } catch (e) {
       log(e.toString());
       emit(LoginErrorState(error: e.toString()));
     }
   }
 
   Future<void> getMyProfile(BuildContext context) async {
-    try 
-    {
+    try {
       emit(GetMyProfileLoadingState());
       final myProfileId = CacheHelper.getDate(key: 'uid');
       final userMap =
@@ -75,6 +75,21 @@ class AuthCubit extends Cubit<AuthStates> {
     } catch (e) {
       log(e.toString());
       emit(RegisterErrorState(error: e.toString()));
+    }
+  }
+
+  Future<void> updateProfileData(String userId,
+      {String? email, String? name, String? password}) async {
+    try {
+      emit(UpdateProfileDataLoadingState());
+      await auth.updateUserData(
+          newEmail: email, newName: name, newPassword: password);
+      await _firestoreRepo.profileServices
+          .updateUserData(userId, email: email, name: name);
+      emit(UpdateProfileDataSuccessState());
+    } catch (e) {
+      emit(UpdateProfileDataErrorState(error: e.toString()));
+      rethrow;
     }
   }
 }

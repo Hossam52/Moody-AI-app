@@ -39,3 +39,13 @@ class GetMyProfileErrorState extends AuthStates {
   final String error;
   GetMyProfileErrorState({required this.error});
 }
+
+//UpdateProfileData online fetch data
+class UpdateProfileDataLoadingState extends AuthStates {}
+
+class UpdateProfileDataSuccessState extends AuthStates {}
+
+class UpdateProfileDataErrorState extends AuthStates {
+  final String error;
+  UpdateProfileDataErrorState({required this.error});
+}
