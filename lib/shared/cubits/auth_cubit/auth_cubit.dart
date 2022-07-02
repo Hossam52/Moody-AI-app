@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:moody_app/domain/models/models.dart';
 import 'package:moody_app/shared/cubits/app_cubit/app_cubit.dart';
+import 'package:moody_app/shared/helper/helper_constants.dart';
 import 'package:moody_app/shared/network/firebase_services/services/fire_auth.dart/fire_auth.dart';
 import 'package:moody_app/shared/network/firebase_services/services/firebase_firestore/fire_firestore.dart';
 import 'package:moody_app/shared/network/locale/cache_helper.dart';
@@ -30,6 +31,7 @@ class AuthCubit extends Cubit<AuthStates> {
       final loggedInUser = UserModel.fromMap(userMap);
       CacheHelper.saveDate(key: 'login', value: true);
       CacheHelper.saveDate(key: 'uid', value: user.uid);
+      HelperConstants.userId = user.uid;
       emit(LoginSuccessState(user: loggedInUser));
     } catch (e) {
       log(e.toString());
@@ -56,6 +58,7 @@ class AuthCubit extends Cubit<AuthStates> {
       required String email,
       required String password,
       required String phone,
+      required String imagePath,
       required String date}) async {
     try {
       emit(RegisterLoadingState());
@@ -68,6 +71,7 @@ class AuthCubit extends Cubit<AuthStates> {
           dateOfBirth: date,
           usersIdFollowing: [],
           likesPostIds: [],
+          imagePath: imagePath,
           followersCount: 0);
       await _firestoreRepo.profileServices
           .addUserData(uid: user.uid, user: model);
@@ -87,8 +91,22 @@ class AuthCubit extends Cubit<AuthStates> {
       await _firestoreRepo.profileServices
           .updateUserData(userId, email: email, name: name);
       emit(UpdateProfileDataSuccessState());
-    } catch (e) {
+    } catch (e) 
+    {
       emit(UpdateProfileDataErrorState(error: e.toString()));
+      rethrow;
+    }
+  }
+
+  Future<void> changePassword(String passowrd) async {
+    emit(UpdateProfileDataLoadingState());
+    try 
+    {
+      await auth.updateUserData(newPassword: passowrd,);
+      emit(UpdateProfileDataSuccessState());
+    } catch (e) 
+    {
+      emit(UpdateProfileDataErrorState(error: 'Error happen try again later'));
       rethrow;
     }
   }

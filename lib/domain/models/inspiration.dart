@@ -6,8 +6,9 @@ class Inspiration {
   String date;
   String userName;
   String userId;
-  String userPic;
+  String? userPic;
   String mood;
+  String? imagePost;
   int likes;
   Inspiration({
     required this.id,
@@ -18,6 +19,7 @@ class Inspiration {
     required this.userPic,
     required this.mood,
     required this.likes,
+    this.imagePost,
   });
   Inspiration.createNewInspirationn({
     required this.text,
@@ -26,6 +28,7 @@ class Inspiration {
     required this.userId,
     required this.userPic,
     required this.mood,
+    this.imagePost,
   }) : likes = 0;
   void toggleLike(bool isIncrease) {
     if (isIncrease) {
@@ -45,6 +48,7 @@ class Inspiration {
       'userPic': userPic,
       'mood': mood,
       'likes': likes,
+      'imagePost':imagePost,
     };
   }
 
@@ -58,6 +62,7 @@ class Inspiration {
       userPic: map['userPic'] ?? '',
       mood: map['mood'] ?? '',
       likes: map['likes']?.toInt() ?? 0,
+      imagePost: map['imagePost'],
     );
   }
 

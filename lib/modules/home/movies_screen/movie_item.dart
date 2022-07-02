@@ -8,6 +8,7 @@ import '../../../presentation/resources/color_manager.dart';
 import '../../../presentation/resources/navigation_manager.dart';
 import '../../../widgets/cached_network_image.dart';
 import 'movie_page.dart';
+import 'package:like_button/like_button.dart';
 
 class MovieItem extends StatelessWidget {
   const MovieItem({Key? key, required this.movie}) : super(key: key);
@@ -97,13 +98,37 @@ class MovieItem extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              InkWell(
-                                onTap: () => movie.addToFavourite(),
-                                child: Icon(Icons.favorite,
+                              LikeButton(
+                                onTap: (isLiked) async {
+                                  movie.addToFavourite();
+                                  return true;
+                                },
+                                size: AppSizes.iconSize25,
+                                bubblesSize: 100,
+                                circleSize: AppSizes.iconSize25,
+                                likeCountAnimationType:
+                                    LikeCountAnimationType.all,
+                                circleColor: const CircleColor(
+                                  start: Color(0xff00ddff),
+                                  end: Colors.red,
+                                ),
+                                bubblesColor: const BubblesColor(
+                                  dotPrimaryColor: Color(0xff33b5e5),
+                                  dotSecondaryColor: Colors.red,
+                                ),
+                                isLiked: movie.isFav,
+                                likeBuilder: (bool isLiked) {
+                                  return Icon(
+                                    Icons.favorite,
+                                    color:
+                                        isLiked ? Colors.red : Colors.white,
                                     size: AppSizes.iconSize25,
-                                    color: movie.isFav
-                                        ? Colors.red
-                                        : ColorManager.white),
+                                  );
+                                },
+                                countBuilder: (count, isLiked, text) {
+                                  return const SizedBox();
+                                },
+                                likeCount: 0,
                               ),
                             ],
                           ),

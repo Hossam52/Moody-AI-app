@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:moody_app/domain/models/models.dart';
-import 'package:moody_app/modules/home/inspiration_screen/post_item.dart';
 import 'package:moody_app/modules/profiles/all_following_screen.dart';
 import 'package:moody_app/modules/profiles/profile_common_widgets/profile_following_item.dart';
 import 'package:moody_app/modules/profiles/profile_common_widgets/profile_picture.dart';
 import 'package:moody_app/modules/profiles/profile_common_widgets/profile_posts.dart';
+import 'package:moody_app/modules/settings/profile_settings.dart';
 import 'package:moody_app/modules/settings/settings_screen.dart';
 import 'package:moody_app/presentation/resources/color_manager.dart';
 import 'package:moody_app/presentation/resources/font_manager.dart';
@@ -52,7 +51,7 @@ class MyProfileScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const ProfilePicture(),
+                          ProfilePicture(imagePath: user.imagePath),
                           sizedBox,
                           Text(
                             user.name,
@@ -76,14 +75,16 @@ class MyProfileScreen extends StatelessWidget {
                           sizedBox,
                           divider,
                           sizedBox,
-                          SettingItem(
-                              title: 'Edit Emergency',
-                              onPressed: () {},
-                              imagePath:
-                                  'assets/images/settings/edit_emergency.svg'),
+                          // SettingItem(
+                          //     title: 'Edit Emergency',
+                          //     onPressed: () {},
+                          //     imagePath:
+                          //         'assets/images/settings/edit_emergency.svg'),
                           SettingItem(
                               title: 'Profile settings',
-                              onPressed: () {},
+                              onPressed: () {
+                                navigateTo(context, const ProfileSettings());
+                              },
                               imagePath:
                                   'assets/images/settings/profile_setting.svg'),
                           divider,

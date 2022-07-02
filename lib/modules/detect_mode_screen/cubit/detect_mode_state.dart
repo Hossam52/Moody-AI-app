@@ -4,8 +4,12 @@ part of 'detect_mode_cubit.dart';
 abstract class DetectModeState {}
 
 class DetectModeInitial extends DetectModeState {}
+
 class DetectModeLoading extends DetectModeState {}
+
 class DetectModeError extends DetectModeState {}
 
-class DetectModeSuccess extends DetectModeState {}
-
+class DetectModeSuccess extends DetectModeState {
+  final String mode;
+  DetectModeSuccess(this.mode);
+}

@@ -10,11 +10,12 @@ import 'package:moody_app/shared/cubits/profile_cubit/profile_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:moody_app/shared/cubits/profile_cubit/profile_states.dart';
 import 'package:moody_app/shared/helper/helper_methods.dart';
+import 'package:moody_app/widgets/default_appbar.dart';
 import 'package:moody_app/widgets/default_text_button.dart';
 import 'package:moody_app/widgets/default_text_button_with_icon.dart';
 
 class FriendProfile extends StatefulWidget {
-  FriendProfile({Key? key, required this.userId}) : super(key: key);
+  const FriendProfile({Key? key, required this.userId}) : super(key: key);
   final String userId;
 
   @override
@@ -29,8 +30,8 @@ class _FriendProfileState extends State<FriendProfile> {
     super.initState();
   }
 
-  final sizedBox = const SizedBox(
-    height: 10,
+  final sizedBox = SizedBox(
+    height: 10.h,
   );
 
   bool isFollowed = false;
@@ -40,6 +41,7 @@ class _FriendProfileState extends State<FriendProfile> {
     log('$isFollowed');
     return Scaffold(
       backgroundColor: ColorManager.white,
+      appBar: defultAppBar(title: 'Friend Profile', centerTitle: true),
       body: SafeArea(
         child: BlocProvider(
             create: (context) {
@@ -91,7 +93,7 @@ class _FriendProfileState extends State<FriendProfile> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const ProfilePicture(),
+                          ProfilePicture(imagePath: user?.imagePath),
                           sizedBox,
                           Text(
                             user!.name,

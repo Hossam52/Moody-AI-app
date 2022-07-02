@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:moody_app/domain/models/song.dart';
 import 'package:moody_app/modules/home/entertainment_screen/best_song_item.dart';
 import 'package:moody_app/presentation/resources/font_manager.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BuildCategorySongsItem extends StatelessWidget {
   const BuildCategorySongsItem(
@@ -32,8 +33,13 @@ class BuildCategorySongsItem extends StatelessWidget {
           child: ListView.separated(
             physics: const BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) => BestSongItem(
-              song: songs[index],
+            itemBuilder: (context, index) => InkWell(
+              onTap: () async {
+                await launchUrl(Uri.parse(songs[index].url));
+              },
+              child: BestSongItem(
+                song: songs[index],
+              ),
             ),
             separatorBuilder: (context, index) => SizedBox(width: 15.w),
             itemCount: songs.length,

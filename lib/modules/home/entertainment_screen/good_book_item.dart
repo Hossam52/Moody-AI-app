@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:moody_app/domain/models/book.dart';
@@ -8,6 +10,7 @@ import 'package:moody_app/presentation/resources/navigation_manager.dart';
 import 'package:moody_app/presentation/resources/styles_manager.dart';
 import 'package:moody_app/presentation/resources/values_manager.dart';
 import 'package:moody_app/widgets/cached_network_image.dart';
+import 'package:like_button/like_button.dart';
 
 class GoodBookItem extends StatelessWidget {
   const GoodBookItem({Key? key, required this.book}) : super(key: key);
@@ -124,16 +127,44 @@ class GoodBookItem extends StatelessWidget {
                         ],
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {
+
+                    LikeButton(
+                      onTap: (_) async {
                         book.addToFavourite();
+
+                        return true;
                       },
-                      icon: Icon(
-                        Icons.favorite,
-                        size: AppSizes.iconSize25,
-                        color: book.isFav ? Colors.red : Colors.white,
+                      size: AppSizes.iconSize25,
+                      bubblesSize: 100,
+                      circleSize: AppSizes.iconSize25,
+                      likeCountAnimationType: LikeCountAnimationType.all,
+                      circleColor: const CircleColor(
+                        start: Color(0xff00ddff),
+                        end: Colors.red,
                       ),
+                      bubblesColor: const BubblesColor(
+                        dotPrimaryColor: Color(0xff33b5e5),
+                        dotSecondaryColor: Colors.red,
+                      ),
+                      isLiked: book.isFav,
+                      // onTap: (){},
+                      likeBuilder: (bool isLiked) {
+                        return Icon(
+                          Icons.favorite,
+                          color: isLiked ? Colors.red : Colors.white,
+                          size: AppSizes.iconSize25,
+                        );
+                      },
+                      countBuilder: (count, isLiked, text) {
+                        return const SizedBox();
+                      },
+                      likeCount: 0,
                     ),
+                    //  Icon(
+                    //   Icons.favorite,
+                    //   size: AppSizes.iconSize25,
+                    //   color: book.isFav ? Colors.red : Colors.white,
+                    // ),
                   ],
                 ),
               ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:moody_app/presentation/resources/font_manager.dart';
 
 import '../presentation/resources/color_manager.dart';
 

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:moody_app/modules/auth/register/register_screen.dart';
 import 'package:moody_app/modules/detect_mode_screen/detect_mode_screen.dart';
@@ -70,7 +68,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                       ),
                       SizedBox(
-                        height: 60.h,
+                        height: 10.h,
+                      ),
+                      Center(
+                        child: CircleAvatar(
+                          child: Image.asset('assets/images/splash.png',
+                              fit: BoxFit.fill),
+                          // backgroundImage:
+                          //     const AssetImage('assets/images/splash.png'),
+                          backgroundColor: ColorManager.black,
+                          radius: 60.r,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 40.h,
                       ),
                       BlocProvider(
                         create: (context) => HelperCubit(),

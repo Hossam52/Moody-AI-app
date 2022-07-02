@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:moody_app/domain/models/inspiration.dart';
@@ -5,8 +7,11 @@ import 'package:moody_app/presentation/resources/assets_manager.dart';
 import 'package:moody_app/presentation/resources/color_manager.dart';
 import 'package:moody_app/presentation/resources/font_manager.dart';
 import 'package:moody_app/presentation/resources/styles_manager.dart';
+import 'package:moody_app/presentation/resources/values_manager.dart';
 import 'package:moody_app/shared/cubits/app_cubit/app_cubit.dart';
 import 'package:moody_app/shared/helper/helper_methods.dart';
+import 'package:moody_app/widgets/cached_network_image.dart';
+import 'package:like_button/like_button.dart';
 
 class PostItem extends StatelessWidget {
   const PostItem({
@@ -27,6 +32,8 @@ class PostItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log(inspirationItem.userPic!);
+    log(isPostLikedByMe(context).toString());
     return Container(
       clipBehavior: Clip.antiAlias,
       padding: EdgeInsets.only(top: 10.h, left: 10.w, right: 10.w, bottom: 3.h),
@@ -41,7 +48,10 @@ class PostItem extends StatelessWidget {
                   }
                 },
                 child: CircleAvatar(
-                  backgroundImage: const AssetImage(AssetsManager.avater),
+                  backgroundImage: AssetImage(
+                      inspirationItem.userPic == 'userPic'
+                          ? AssetsManager.avater
+                          : inspirationItem.userPic!),
                   radius: 25.w,
                   // child: Image.asset(
                   //   AssetsManager.avater,
@@ -100,7 +110,7 @@ class PostItem extends StatelessWidget {
                 backgroundColor: Colors.grey.shade900,
                 child: FittedBox(
                   child: Text(
-                    index.toString(),
+                    (index).toString(),
                     style: StyleManager.primaryTextStyle(
                         fontSize: FontSize.s14,
                         fontWeight: FontWeightManager.semiBold,
@@ -126,6 +136,22 @@ class PostItem extends StatelessWidget {
                   color: ColorManager.white),
             ),
           ),
+          if (inspirationItem.imagePost != null)
+            Column(
+              children: [
+                SizedBox(
+                  height: 5.h,
+                ),
+                ClipRRect(
+                  clipBehavior: Clip.antiAlias,
+                  borderRadius: BorderRadius.circular(10.r),
+                  child: CachedNetworkImageWidget(
+                    imageUrl: inspirationItem.imagePost!,
+                    width: double.maxFinite,
+                  ),
+                ),
+              ],
+            ),
           SizedBox(
             height: 10.h,
           ),
@@ -136,35 +162,69 @@ class PostItem extends StatelessWidget {
           ),
           Align(
             alignment: AlignmentDirectional.topStart,
-            child: InkWell(
-              onTap: () {
-                onToggleLike();
-              },
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 3.w),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      isPostLikedByMe(context)
-                          ? Icons.favorite
-                          : Icons.favorite_outline,
-                      size: 25.sp,
-                      color: ColorManager.white,
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 3.w),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  LikeButton(
+                    onTap: ((isLiked) async {
+                      onToggleLike();
+                      return true;
+                    }),
+                    // onTap: (_) {
+                    //   onToggleLike();
+                    //   return isPostLikedByMe(context);
+                    // },
+                    size: AppSizes.iconSize30,
+                    bubblesSize: 100,
+                    padding: EdgeInsets.symmetric(horizontal: 4.w),
+                    likeCountPadding: EdgeInsets.symmetric(horizontal: 3.w),
+                    circleSize: AppSizes.iconSize30,
+                    likeCountAnimationType: LikeCountAnimationType.all,
+                    circleColor: const CircleColor(
+                      start: Color(0xff00ddff),
+                      end: Colors.red,
                     ),
-                    SizedBox(
-                      width: 10.w,
+                    bubblesColor: const BubblesColor(
+                      dotPrimaryColor: Color(0xff33b5e5),
+                      dotSecondaryColor: Colors.red,
                     ),
-                    Text(
-                      inspirationItem.likes.toString(),
-                      // '30K',
-                      style: StyleManager.primaryTextStyle(
-                          fontSize: FontSize.s19,
-                          fontWeight: FontWeightManager.medium,
-                          color: ColorManager.white),
-                    ),
-                  ],
-                ),
+                    isLiked: isPostLikedByMe(context),
+                    likeBuilder: (bool isLiked) {
+                      return Icon(
+                        isLiked ? Icons.favorite : Icons.favorite_outline,
+                        color: isLiked ? Colors.red : Colors.grey,
+                        size: AppSizes.iconSize30,
+                      );
+                    },
+                    countBuilder: (count, isLiked, text) {
+                      return Text(text,
+                          style: StyleManager.primaryTextStyle(
+                              fontSize: FontSize.s19,
+                              fontWeight: FontWeightManager.medium,
+                              color: ColorManager.white));
+                    },
+                    likeCount: inspirationItem.likes,
+                  ),
+
+                  // Icon(
+                  //   isPostLikedByMe(context)
+                  //       ? Icons.favorite
+                  //       : Icons.favorite_outline,
+                  //   size: 25.sp,
+                  //   color: ColorManager.white,
+                  // ),
+
+                  // Text(
+                  //   inspirationItem.likes.toString(),
+                  //   // '30K',
+                  //   style: StyleManager.primaryTextStyle(
+                  //       fontSize: FontSize.s19,
+                  //       fontWeight: FontWeightManager.medium,
+                  //       color: ColorManager.white),
+                  // ),
+                ],
               ),
             ),
           ),
@@ -175,10 +235,7 @@ class PostItem extends StatelessWidget {
         border: Border.all(
           color: ColorManager.grey,
         ),
-        gradient: LinearGradient(
-            colors: [ColorManager.black, ColorManager.blackPosts],
-            begin: Alignment.topRight,
-            end: Alignment.bottomRight),
+        gradient: linearGradient,
         color: ColorManager.blackPosts,
       ),
     );

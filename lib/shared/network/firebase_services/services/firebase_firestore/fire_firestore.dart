@@ -1,9 +1,7 @@
-import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:moody_app/domain/models/models.dart';
 import 'package:moody_app/shared/network/firebase_services/services/firebase_firestore/profile_services.dart';
-part './inspiration_services.dart';
+
+import 'inspiration_services.dart';
 
 class FireStorePaths {
   FireStorePaths._();
@@ -17,7 +15,7 @@ class FireStorePaths {
 
 class FireStoreRepo {
   FireStoreRepo._();
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+ // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   static FireStoreRepo get instance => FireStoreRepo._();
   //
   final InspirationServices inspirationServices = InspirationServices.instance;

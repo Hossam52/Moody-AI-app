@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:moody_app/modules/settings/change_password_screen.dart';
+import 'package:moody_app/presentation/resources/navigation_manager.dart';
 import 'package:moody_app/shared/cubits/app_cubit/app_cubit.dart';
 import 'package:moody_app/shared/cubits/auth_cubit/auth_cubit.dart';
 import 'package:moody_app/shared/cubits/auth_cubit/auth_states.dart';
-import 'package:moody_app/widgets/default_text_button.dart';
 import 'package:moody_app/widgets/default_text_button_with_icon.dart';
 import 'package:moody_app/widgets/default_text_field.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileSettings extends StatefulWidget {
@@ -42,23 +45,27 @@ class _ProfileSettingsState extends State<ProfileSettings> {
           child: BlocBuilder<AuthCubit, AuthStates>(
             builder: (context, state) {
               return Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: EdgeInsets.all(16.0.r),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const _ProfilePicture(),
+                      _ProfilePicture(imageUrl: user.imagePath),
+                      SizedBox(
+                        height: 20.h,
+                      ),
                       _buildHeader('Personal info'),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20.h),
                       DefaultTextField(
                           hintText: 'Name', controller: nameController),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20.h),
                       DefaultTextField(
                           hintText: 'Email', controller: emailController),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20.h),
                       DefaultTextField(
                           hintText: 'Phone', controller: phoneController),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20.h),
+
                       _saveButton('Update personal info', () {
                         AuthCubit.instance(context).updateProfileData(user.id,
                             email: emailController.text,
@@ -68,17 +75,31 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                         thickness: 1.2,
                         color: Colors.grey,
                       ),
-                      const SizedBox(height: 20),
-                      _buildHeader('Password change'),
-                      const SizedBox(height: 20),
-                      DefaultTextField(
-                          hintText: 'Password',
-                          controller: newPasswordController),
-                      const SizedBox(height: 20),
-                      _saveButton('Update password', () {
-                        AuthCubit.instance(context).updateProfileData(user.id,
-                            password: newPasswordController.text);
-                      }),
+                      SizedBox(height: 20.h),
+                      _buildHeader('Other Options'),
+                      const Divider(
+                        thickness: 1.2,
+                        color: Colors.grey,
+                      ),
+                      SizedBox(height: 20.h),
+                      DefaultTextButtonWithIcon(
+                        onPressed: () {
+                          navigateTo(context, ChangePasswordScreen());
+                        },
+                        colorButton: Colors.white,
+                        title: 'Change Password',
+                        iconData: Icons.security,
+                        iconColor: Colors.black,
+                      ),
+                      // DefaultTextField(
+                      //     hintText: 'Change Password',
+                      //     controller: newPasswordController),
+                      // SizedBox(height: 20.h),
+
+                      // _saveButton('Update password', () {
+                      //   AuthCubit.instance(context).updateProfileData(user.id,
+                      //       password: newPasswordController.text);
+                      // }),
                     ],
                   ),
                 ),
@@ -92,8 +113,8 @@ class _ProfileSettingsState extends State<ProfileSettings> {
 
   Widget _buildHeader(String text) {
     return Text(text,
-        style: const TextStyle(
-            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24));
+        style: TextStyle(
+            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24.sp));
   }
 
   Widget _saveButton(String text, VoidCallback updateAttributes) {
@@ -115,10 +136,39 @@ class _ProfileSettingsState extends State<ProfileSettings> {
 }
 
 class _ProfilePicture extends StatelessWidget {
-  const _ProfilePicture({Key? key}) : super(key: key);
-
+  _ProfilePicture({Key? key, this.imageUrl}) : super(key: key);
+  String? imageUrl;
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return SizedBox(
+      height: 200.h,
+      child: Center(
+        child: Stack(alignment: AlignmentDirectional.bottomEnd, children: [
+          Container(
+              height: 200.h,
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Image.asset(
+                imageUrl ?? 'assets/images/avater.jpg',
+                fit: BoxFit.contain,
+              )
+              // : CachedNetworkImageWidget(
+              //     imageUrl: imageUrl!, width: double.maxFinite),
+              ),
+          // IconButton(
+          //     onPressed: () async {
+          //       final file = await getImage();
+          //       if (file != null) {
+          //         FirebaseHelper.uploadFileTofireStorage(file);
+          //       } else {}
+          //     },
+          //     icon: const Icon(
+          //       Icons.add_a_photo,
+          //     )),
+        ]),
+      ),
+    );
   }
 }

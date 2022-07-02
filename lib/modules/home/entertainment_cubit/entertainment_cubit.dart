@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:moody_app/domain/models/book.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,7 +25,6 @@ class EntertainmentCubit extends Cubit<EntertainmentState> {
     emit(EntertainmentLoading());
     try {
       bestBooks = _booksServices.getBestBooks().listen((event) {
-        log(event.size.toString());
         books = [];
         for (var bookMap in event.docs) {
           Book book = Book.fromJson(bookMap.data());
@@ -36,12 +34,10 @@ class EntertainmentCubit extends Cubit<EntertainmentState> {
         loadingBooks = true;
         emit(EntertainmentSuccess());
       });
-      bestsongs = _songsServices.getBestSongs().listen((event) 
-      {
+      bestsongs = _songsServices.getBestSongs().listen((event) {
         songs = [];
         log('songs');
-        for (var songMap in event.docs) 
-        {
+        for (var songMap in event.docs) {
           Song song = Song.fromJson(songMap.data());
           song.firebaseId = songMap.id;
           songs.add(song);

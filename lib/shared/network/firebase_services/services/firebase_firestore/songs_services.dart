@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:moody_app/domain/enums/emotions.dart';
-import 'package:moody_app/domain/models/models.dart';
 import 'package:moody_app/presentation/resources/constant_values_manager.dart';
 
 import 'fire_firestore.dart';
@@ -21,10 +20,11 @@ class SongsServices {
           )
           .snapshots();
     }
-   return _firestore
-          .collection(FireStorePaths.songsPath)
-          
-          .snapshots();
+    return _firestore.collection(FireStorePaths.songsPath).snapshots();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllSongsFav() {
+    return _firestore.collection(FireStorePaths.songsPath).snapshots();
   }
 
   Future<void> updateOnSong(

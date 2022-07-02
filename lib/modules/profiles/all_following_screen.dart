@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moody_app/modules/profiles/profile_common_widgets/profile_following_item.dart';
 import 'package:moody_app/shared/cubits/app_cubit/app_cubit.dart';
-import 'package:moody_app/shared/cubits/profile_cubit/profile_cubit.dart';
 
 class AllFollowingScreen extends StatelessWidget {
   const AllFollowingScreen({Key? key}) : super(key: key);

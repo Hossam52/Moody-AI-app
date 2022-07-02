@@ -47,7 +47,7 @@ class _RecentInspirationPostsState extends State<RecentInspirationPosts> {
                   height: 10.h,
                 ),
                 itemBuilder: (context, index) => PostItem(
-                  index: index,
+                  index: index+1,
                   onToggleLike: () => HomeCubit.instance(context)
                       .toggleLike(context, recentInspirationList[index].id!),
                   inspirationItem: recentInspirationList[index],

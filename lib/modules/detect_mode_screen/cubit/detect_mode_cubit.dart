@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:http/http.dart' as http;
 
 import 'package:meta/meta.dart';
 import 'package:dio/dio.dart';
@@ -25,11 +24,11 @@ class DetectModeCubit extends Cubit<DetectModeState> {
     var result = await FlutterImageCompress.compressAndGetFile(
       file.absolute.path,
       tempPath,
-      quality: 88,
+      quality: 80,
     );
     log('compress');
-    print(file.lengthSync());
-    print(result!.lengthSync());
+    log(file.lengthSync().toString());
+    log(result!.lengthSync().toString());
 
     return result;
   }
@@ -39,13 +38,13 @@ class DetectModeCubit extends Cubit<DetectModeState> {
     emit(DetectModeLoading());
     try {
       final Dio dio = Dio();
-      //emulator => https://10.0.2.2:8000
       File? file = await testCompressAndGetFile(image);
       List<int> imageBytes = file!.readAsBytesSync();
       String base64Image = base64Encode(imageBytes);
       log(base64Image);
       Map<String, String> postBody = {"img": base64Image};
-      final response = await dio.postUri(Uri.parse('http://10.0.2.2:8000'),
+      final response = await dio.postUri(
+          Uri.parse('https://evening-ridge-42710.herokuapp.com/'),
           data: postBody,
           options: Options(
             headers: {"Content-type": "application/json"},
@@ -60,7 +59,7 @@ class DetectModeCubit extends Cubit<DetectModeState> {
       //my mood
       myMood = response.data;
       log(response.data.toString());
-      emit(DetectModeSuccess());
+      emit(DetectModeSuccess('Your mode is $myMood'));
     } catch (e) {
       emit(DetectModeError());
       rethrow;

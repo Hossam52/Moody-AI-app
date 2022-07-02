@@ -1,14 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:moody_app/modules/home/entertainment_screen/best_song_item.dart';
 import 'package:moody_app/modules/home/music_screen/build_category_songs_item.dart';
 import 'package:moody_app/modules/home/music_screen/music_item.dart';
 import 'package:moody_app/modules/home/music_screen/songs_cubit/songs_cubit.dart';
 
 import '../../../presentation/resources/color_manager.dart';
-import '../../../widgets/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class MusicScreen extends StatelessWidget {
   const MusicScreen({Key? key}) : super(key: key);
@@ -79,7 +78,10 @@ class MusicScreen extends StatelessWidget {
                               topRight: Radius.circular(17.r))),
                       child: ListView.separated(
                         itemBuilder: (context, index) => InkWell(
-                            onTap: () {},
+                            onTap: () async{
+                  await launchUrl(Uri.parse(SongsCubit.get(context).songs[index].url));
+
+                            },
                             child: MusicItem(
                               song: SongsCubit.get(context).songs[index],
                             )),

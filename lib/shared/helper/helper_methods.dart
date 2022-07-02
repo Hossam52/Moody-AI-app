@@ -1,6 +1,6 @@
+import 'dart:developer';
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +8,9 @@ import 'package:moody_app/modules/profiles/friend_profile.dart';
 import 'package:moody_app/modules/profiles/my_profile_screen.dart';
 import 'package:moody_app/presentation/resources/navigation_manager.dart';
 import 'package:moody_app/shared/cubits/app_cubit/app_cubit.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+
 
 void closeKeyboard(BuildContext context) {
   FocusManager.instance.primaryFocus?.unfocus();
@@ -62,3 +65,21 @@ void navigateToProfile(BuildContext context, String profileId) {
     navigateTo(context, FriendProfile(userId: profileId));
   }
 }
+Future<File?> testCompressAndGetFile(File file,{int? quality}) async {
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path +
+        '/' +
+        DateTime.now().millisecondsSinceEpoch.toString() +
+        '.' +
+        'jpeg';
+    var result = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path,
+      tempPath,
+      quality: quality??80,
+    );
+    log('compress');
+    log(file.lengthSync().toString());
+    log(result!.lengthSync().toString());
+
+    return result;
+  }

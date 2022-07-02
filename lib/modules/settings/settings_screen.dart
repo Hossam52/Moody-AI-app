@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:moody_app/modules/auth/login/login_screen.dart';
 import 'package:moody_app/modules/detect_mode_screen/detect_mode_screen.dart';
-import 'package:moody_app/modules/home/movies_screen/movie_page.dart';
 import 'package:moody_app/modules/profiles/my_profile_screen.dart';
 import 'package:moody_app/modules/settings/call_us_screen.dart';
+import 'package:moody_app/modules/settings/favourite_screen/favourite_screen.dart';
 import 'package:moody_app/modules/settings/profile_settings.dart';
 import 'package:moody_app/presentation/resources/assets_manager.dart';
 import 'package:moody_app/presentation/resources/color_manager.dart';
@@ -31,7 +31,9 @@ class SettingScreen extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: MediaQuery.of(context).size.width * 0.1,
-                      backgroundImage: const AssetImage(AssetsManager.avater),
+                      backgroundImage: AssetImage(
+                          AppCubit.get(context).getUser.imagePath ??
+                              AssetsManager.avater),
                     ),
                     SizedBox(
                       width: 20.w,
@@ -52,15 +54,19 @@ class SettingScreen extends StatelessWidget {
                       navigateTo(context, const MyProfileScreen());
                     },
                     imagePath: 'assets/images/settings/profile.svg'),
-                SettingItem(
-                    title: 'Edit emergency',
-                    onPressed: () {
-                      //navigateTo(context, const MoviePage());
-                    },
-                    imagePath: 'assets/images/settings/edit_emergency.svg'),
+                // SettingItem(
+                //     title: 'Edit emergency',
+                //     onPressed: () {
+                //       //navigateTo(context, const MoviePage());
+                //     },
+                //     imagePath: 'assets/images/settings/edit_emergency.svg'),
                 SettingItem(
                     title: 'Detect Your Mood',
-                    onPressed: () => navigateTo(context, DetectModeScreen()),
+                    onPressed: () => navigateTo(
+                        context,
+                        DetectModeScreen(
+                          isHome: true,
+                        )),
                     imagePath: 'assets/images/settings/edit_emergency.svg'),
                 SettingItem(
                     title: 'Profile settings',
@@ -73,17 +79,18 @@ class SettingScreen extends StatelessWidget {
                 ),
                 SettingItem(
                     title: 'Favorite',
-                    onPressed: () {},
+                    onPressed: () =>
+                        navigateTo(context, const FavouriteScreen()),
                     imagePath: 'assets/images/settings/favorite.svg'),
                 Divider(
                   color: ColorManager.settingItemColor,
                 ),
-                SettingItem(
-                    title: 'Settings',
-                    onPressed: () {
-                      navigateTo(context, const ProfileSettings());
-                    },
-                    imagePath: 'assets/images/settings/settings.svg'),
+                // SettingItem(
+                //     title: 'Settings',
+                //     onPressed: () {
+                //       navigateTo(context, const ProfileSettings());
+                //     },
+                //     imagePath: 'assets/images/settings/settings.svg'),
                 SettingItem(
                     title: 'Call Us',
                     onPressed: () {
@@ -97,8 +104,10 @@ class SettingScreen extends StatelessWidget {
                     title: 'Log out',
                     onPressed: () async {
                       await FireAuth.instance.logoutUser();
-                      CacheHelper.removeData(key: 'login');
-                      navigateAndFinish(context, LoginScreen());
+                      AppCubit.get(context).changeCurrentScreen(0);
+                      CacheHelper.saveDate(key: 'login', value: false);
+                   //   CacheHelper.removeData(key: 'login');
+                      navigateAndFinish(context, const LoginScreen());
                     },
                     imagePath: 'assets/images/settings/logout.svg'),
               ],

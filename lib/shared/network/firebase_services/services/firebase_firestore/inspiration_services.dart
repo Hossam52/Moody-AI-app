@@ -1,4 +1,9 @@
-part of './fire_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:moody_app/domain/enums/emotions.dart';
+import 'package:moody_app/domain/models/models.dart';
+import 'package:moody_app/presentation/resources/constant_values_manager.dart';
+
+import 'fire_firestore.dart';
 
 int paginationSize = 10;
 
@@ -43,6 +48,28 @@ class InspirationServices {
         .limit(paginationSize)
         .get();
     return allData;
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getTopPost() {
+    if (myMood == emotions.fear.name ||
+        myMood == emotions.sad.name ||
+        myMood == emotions.angry.name) {
+      return _firestore
+          .collection(FireStorePaths.inspirationPath)
+          .where(
+            'class',
+            isEqualTo:
+                myMood == emotions.sad.name ? emotions.happy.name : myMood,
+          )
+          .orderBy('likes', descending: true)
+          .limit(1)
+          .snapshots();
+    }
+    return _firestore
+        .collection(FireStorePaths.inspirationPath)
+        .orderBy('likes', descending: true)
+        .limit(paginationSize)
+        .snapshots();
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getMoreTopInspirations(

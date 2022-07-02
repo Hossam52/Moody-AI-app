@@ -1,6 +1,9 @@
+
 import 'package:flutter/material.dart';
+import 'package:moody_app/modules/auth/privacy_policy_screen/privacy_policy_screen.dart';
 import 'package:moody_app/presentation/resources/color_manager.dart';
 import 'package:moody_app/presentation/resources/font_manager.dart';
+import 'package:moody_app/presentation/resources/navigation_manager.dart';
 import 'package:moody_app/presentation/resources/styles_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:moody_app/presentation/resources/validation_manager.dart';
@@ -8,9 +11,8 @@ import 'package:moody_app/shared/cubits/auth_cubit/auth_cubit.dart';
 import 'package:moody_app/shared/cubits/auth_cubit/auth_states.dart';
 import 'package:moody_app/shared/cubits/helper_cubit/helper_cubit.dart';
 import 'package:moody_app/shared/helper/helper_methods.dart';
+import 'package:moody_app/widgets/default_appbar.dart';
 import 'package:moody_app/widgets/default_text_button.dart';
-import 'package:moody_app/widgets/default_text_button_with_icon.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:moody_app/widgets/default_text_field.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -26,6 +28,7 @@ class RegisterScreen extends StatelessWidget {
   final phoneController = TextEditingController();
   final birthDataController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  String? avater;
   List<FocusNode> nodes = [
     FocusNode(),
     FocusNode(),
@@ -38,9 +41,8 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorManager.black,
-      appBar: AppBar(
-        backgroundColor: ColorManager.black,
-        title: const Text('New user'),
+      appBar: defultAppBar(
+        title: 'New User',
         centerTitle: true,
       ),
       body: BlocProvider(
@@ -74,6 +76,91 @@ class RegisterScreen extends StatelessWidget {
                                   color: ColorManager.white),
                             ),
                             SizedBox(
+                              height: 10.h,
+                            ),
+                            SizedBox(
+                              width: 1.sw,
+                              child: BlocProvider(
+                                create: (context) => HelperCubit(),
+                                child: BlocBuilder<HelperCubit, HelperState>(
+                                  builder: (context, state) {
+                                    var cubit = HelperCubit.get(context);
+                                    return Column(
+                                      children: [
+                                        Text(
+                                          'Choose avater',
+                                          style: StyleManager.primaryTextStyle(
+                                              fontSize: FontSize.s19,
+                                              fontWeight:
+                                                  FontWeightManager.medium,
+                                              color: ColorManager.white),
+                                        ),
+                                        SizedBox(
+                                          height: 10.h,
+                                        ),
+                                        Container(
+                                            width: double.maxFinite,
+                                            // height: 220.h,
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 2.h, horizontal: 4.w),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.r),
+                                              border: Border.all(
+                                                  color: ColorManager.white),
+                                            ),
+                                            child: GridView.builder(
+                                              shrinkWrap: true,
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              itemCount:
+                                                  HelperCubit.get(context)
+                                                      .avaters
+                                                      .length,
+                                              gridDelegate:
+                                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                                      crossAxisCount: 4,
+                                                      mainAxisExtent: 80.w,
+                                                      //crossAxisSpacing: 4.w,
+                                                      mainAxisSpacing: 6.w),
+                                              itemBuilder: (context, index) =>
+                                                  InkWell(
+                                                onTap: () {
+                                                  cubit.selectedAvater =
+                                                      cubit.avaters[index];
+                                                  avater = cubit.selectedAvater;
+
+                                                  cubit.rebuild();
+                                                  //   log(cubit.selectedAvater);
+                                                },
+                                                child: Container(
+                                                  child: Image.asset(
+                                                    cubit.avaters[index],
+                                                    height: 60.w,
+                                                    width: 60.w,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        cubit.selectedAvater ==
+                                                                cubit.avaters[
+                                                                    index]
+                                                            ? ColorManager.white
+                                                            : Colors
+                                                                .transparent,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.r),
+                                                  ),
+                                                ),
+                                              ),
+                                            )),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                            SizedBox(
                               height: 20.h,
                             ),
                             DefaultTextField(
@@ -81,8 +168,9 @@ class RegisterScreen extends StatelessWidget {
                               labelText: 'Name',
                               controller: nameController,
                               validator: (value) {
-                                if (value!.isEmpty)
+                                if (value!.isEmpty) {
                                   return 'Please Enter Your Name';
+                                }
                                 return null;
                               },
                             ),
@@ -185,12 +273,17 @@ class RegisterScreen extends StatelessWidget {
                                 SizedBox(
                                   width: 10.w,
                                 ),
-                                Text(
-                                  'I Agree On Privacy Policy',
-                                  style: StyleManager.primaryTextStyle(
-                                      fontSize: FontSize.s14,
-                                      fontWeight: FontWeight.w400,
-                                      color: ColorManager.white),
+                                InkWell(
+                                  onTap: () {
+                                    navigateTo(context, const PrivacyPolicy());
+                                  },
+                                  child: Text(
+                                    'I Agree On Privacy Policy',
+                                    style: StyleManager.primaryTextStyle(
+                                        fontSize: FontSize.s14,
+                                        fontWeight: FontWeight.w400,
+                                        color: ColorManager.white),
+                                  ),
                                 )
                               ],
                             ),
@@ -224,14 +317,27 @@ class RegisterScreen extends StatelessWidget {
                                   }
                                   return DefaultTextButton(
                                       onPressed: () {
-                                        if (formKey.currentState!.validate()) {
-                                          AuthCubit.instance(context).register(
-                                              name: nameController.text,
-                                              email: emailController.text,
-                                              password: passwordController.text,
-                                              phone: phoneController.text,
-                                              date: selectedDate
-                                                  .toIso8601String());
+                                        if (avater != null) {
+                                          if (formKey.currentState!
+                                                  .validate() &&
+                                              avater != null) {
+                                            AuthCubit.instance(context)
+                                                .register(
+                                                    name: nameController.text,
+                                                    email: emailController.text,
+                                                    password:
+                                                        passwordController.text,
+                                                    phone: phoneController.text,
+                                                    imagePath: avater!,
+                                                    date: selectedDate
+                                                        .toIso8601String());
+                                          }
+                                        } else {
+                                          showSnackBar(
+                                              context: context,
+                                              text: 'Please choose avater',
+                                              backgroundColor:
+                                                  ColorManager.errorColor);
                                         }
                                       },
                                       colorButton: ColorManager.white,
@@ -242,46 +348,46 @@ class RegisterScreen extends StatelessWidget {
                             SizedBox(
                               height: 20.h,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                    child: Divider(
-                                  height: 1.h,
-                                  color: ColorManager.white,
-                                )),
-                                SizedBox(
-                                  width: 20.w,
-                                ),
-                                Text(
-                                  'OR',
-                                  style: StyleManager.primaryTextStyle(
-                                      fontSize: FontSize.s16,
-                                      fontWeight: FontWeightManager.regular,
-                                      color: ColorManager.white),
-                                ),
-                                SizedBox(
-                                  width: 20.w,
-                                ),
-                                Expanded(
-                                    child: Divider(
-                                  height: 1.h,
-                                  color: ColorManager.white,
-                                )),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                            SizedBox(
-                              width: double.infinity,
-                              child: DefaultTextButtonWithIcon(
-                                onPressed: () {},
-                                colorButton: ColorManager.white,
-                                title: 'Sign Up With Google',
-                                iconData: FontAwesomeIcons.google,
-                              ),
-                            )
+                            //   Row(
+                            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //     children: [
+                            //       Expanded(
+                            //           child: Divider(
+                            //         height: 1.h,
+                            //         color: ColorManager.white,
+                            //       )),
+                            //       SizedBox(
+                            //         width: 20.w,
+                            //       ),
+                            //       Text(
+                            //         'OR',
+                            //         style: StyleManager.primaryTextStyle(
+                            //             fontSize: FontSize.s16,
+                            //             fontWeight: FontWeightManager.regular,
+                            //             color: ColorManager.white),
+                            //       ),
+                            //       SizedBox(
+                            //         width: 20.w,
+                            //       ),
+                            //       Expanded(
+                            //           child: Divider(
+                            //         height: 1.h,
+                            //         color: ColorManager.white,
+                            //       )),
+                            //     ],
+                            //   ),
+                            //   SizedBox(
+                            //     height: 20.h,
+                            //   ),
+                            //   SizedBox(
+                            //     width: double.infinity,
+                            //     child: DefaultTextButtonWithIcon(
+                            //       onPressed: () {},
+                            //       colorButton: ColorManager.white,
+                            //       title: 'Sign Up With Google',
+                            //       iconData: FontAwesomeIcons.google,
+                            //     ),
+                            //   )
                           ],
                         );
                       },

@@ -1,11 +1,6 @@
 import 'dart:async';
-import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:meta/meta.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moody_app/domain/models/book.dart';
 import 'package:moody_app/domain/models/movie.dart';
 import 'package:moody_app/shared/network/firebase_services/services/firebase_firestore/movies_services.dart';
 
@@ -37,9 +32,7 @@ class MoviesCubit extends Cubit<MoviesState> {
 
   @override
   Future<void> close() async {
-    if (moviesStream != null) {
-      await moviesStream.cancel();
-    }
+    await moviesStream.cancel();
     return super.close();
   }
 //

@@ -1,3 +1,4 @@
+import 'package:moody_app/shared/helper/helper_constants.dart';
 import 'package:moody_app/shared/network/firebase_services/services/firebase_firestore/books_services.dart';
 
 class Book {
@@ -43,7 +44,7 @@ class Book {
       usersFav: data['usersFav'] ?? '',
     );
 
-    book.isFav = book.usersFav.contains('1,');
+    book.isFav = book.usersFav.contains('${HelperConstants.userId},');
     return book;
   }
   void addToFavourite() async {
@@ -51,12 +52,12 @@ class Book {
     String tempUsersFav = usersFav;
     bool tempFav = isFav;
     try {
-      if (usersFav.contains('1,')) {
-        int firstIndex = usersFav.indexOf('1,');
+      if (usersFav.contains('${HelperConstants.userId},')) {
+        int firstIndex = usersFav.indexOf('${HelperConstants.userId},');
         usersFav = usersFav.replaceRange(firstIndex, firstIndex + 2, '');
         isFav = false;
       } else {
-        usersFav = usersFav + '1,';
+        usersFav = usersFav + '${HelperConstants.userId},';
         isFav = true;
       }
       await BooksServices.instance.updateOnBook(firebaseId!, usersFav);

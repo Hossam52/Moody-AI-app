@@ -101,6 +101,7 @@ class ProfileServices {
     await _firestore.collection(FireStorePaths.usersPath).doc(id).update({
       if (email != null) 'email': email,
       if (name != null) 'name': name,
+      
     });
   }
 }

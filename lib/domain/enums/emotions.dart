@@ -1,5 +1,4 @@
-enum emotions
-{
+enum emotions {
   angry,
   disgust,
   fear,

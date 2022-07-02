@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:moody_app/domain/enums/emotions.dart';
-import 'package:moody_app/domain/models/models.dart';
 import 'package:moody_app/presentation/resources/constant_values_manager.dart';
 
 import 'fire_firestore.dart';
@@ -12,7 +11,7 @@ class MoviesServices {
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getAllRelatedMovies() {
     //class represent my mood
-    if(myMood==emotions.happy.name||myMood==emotions.sad.name) {
+    if(myMood==emotions.happy.name||myMood==emotions.sad.name||myMood==emotions.angry.name) {
       return _firestore
         .collection(FireStorePaths.mediaPath)
         .where(
@@ -26,6 +25,12 @@ class MoviesServices {
         .snapshots();
   }
 
+Stream<QuerySnapshot<Map<String, dynamic>>> getAllMoviesFav()
+{
+  return _firestore
+        .collection(FireStorePaths.mediaPath)
+        .snapshots();
+}
   Future<void> updateOnMovie(
       {required String id,
       required String fav,

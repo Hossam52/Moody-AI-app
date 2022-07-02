@@ -9,6 +9,8 @@ import 'package:moody_app/presentation/resources/font_manager.dart';
 import 'package:moody_app/presentation/resources/navigation_manager.dart';
 import 'package:moody_app/presentation/resources/styles_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:moody_app/presentation/resources/values_manager.dart';
+import 'package:moody_app/shared/cubits/app_cubit/app_cubit.dart';
 import 'package:moody_app/shared/cubits/helper_cubit/helper_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moody_app/shared/helper/helper_methods.dart';
@@ -18,8 +20,9 @@ import 'package:moody_app/widgets/loading_widget.dart';
 
 // ignore: must_be_immutable
 class DetectModeScreen extends StatelessWidget {
-  DetectModeScreen({Key? key}) : super(key: key);
+  DetectModeScreen({Key? key, this.isHome = false}) : super(key: key);
   File? image;
+  bool isHome;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,41 +61,54 @@ class DetectModeScreen extends StatelessWidget {
                       if (image != null) HelperCubit.get(context).rebuild();
                     },
                     focusColor: Colors.teal,
-                    child: Container(
-                      clipBehavior: Clip.antiAlias,
-                      height: 150.h,
-                      width: 150.w,
-                      child: image != null
-                          ? Image.file(
-                              image!,
-                              fit: BoxFit.cover,
-                            )
-                          : Stack(
-                              fit: StackFit.expand,
-                              children: [
-                                Opacity(
+                    child: SizedBox(
+                      width: 170.w,
+                      child: Stack(children: [
+                        SizedBox(
+                          height: 170.h,
+                          width: 170.w,
+                        ),
+                        Container(
+                          clipBehavior: Clip.antiAlias,
+                          height: 150.h,
+                          width: 150.w,
+                          child: image != null
+                              ? Image.file(
+                                  image!,
+                                  fit: BoxFit.cover,
+                                )
+                              : Opacity(
                                   opacity: 0.8,
                                   child: Image.asset(
-                                    'assets/images/question.jpg',
+                                    'assets/images/3328841.png',
                                     fit: BoxFit.fill,
                                   ),
                                 ),
-                                const Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: Text(
-                                    'Click here',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                )
-                              ],
+                          decoration: BoxDecoration(
+                            color: ColorManager.white,
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 3.h,
+                          right: 3.w,
+                          child: Container(
+                            padding: EdgeInsets.all(4.r),
+                            decoration: BoxDecoration(
+                              color: ColorManager.white,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: ColorManager.white,
+                              ),
                             ),
-                      decoration: BoxDecoration(
-                        color: ColorManager.white,
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
+                            child: Icon(
+                              Icons.add_a_photo,
+                              color: ColorManager.black,
+                              size: AppSizes.iconSize25,
+                            ),
+                          ),
+                        ),
+                      ]),
                     ),
                   ),
                   SizedBox(
@@ -102,10 +118,22 @@ class DetectModeScreen extends StatelessWidget {
                       child: BlocConsumer<DetectModeCubit, DetectModeState>(
                         listener: (context, state) {
                           if (state is DetectModeSuccess) {
+                            showSnackBar(
+                              context: context,
+                              text: state.mode,
+                              backgroundColor: ColorManager.successColor,
+                            );
+
+                            //Navigator.pop(context);
+                            if (isHome) 
+                            {
+                              AppCubit.get(context).changeCurrentScreen(0);
+                            }
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (_) => const HomeLayout()));
+                                  builder: (_) => const HomeLayout(),
+                                ));
                           }
                         },
                         builder: (context, state) {

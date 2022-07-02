@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:moody_app/domain/models/models.dart';
 import 'package:moody_app/presentation/resources/color_manager.dart';
 import 'package:moody_app/shared/cubits/app_cubit/app_cubit.dart';
 import 'package:moody_app/shared/cubits/home_cubit/inspiration_data_class.dart';
+import 'package:moody_app/shared/helper/firebase_helper.dart';
 import 'package:moody_app/shared/helper/helper_methods.dart';
 import 'package:moody_app/shared/network/firebase_services/services/firebase_firestore/books_services.dart';
 import 'package:moody_app/shared/network/firebase_services/services/firebase_firestore/fire_firestore.dart';
@@ -43,7 +45,6 @@ class HomeCubit extends Cubit<HomeStates> {
   }
 
   Future<void> getGoogleBooks() async {
-    
     final response = await Dio()
         .get('https://www.googleapis.com/books/v1/volumes?q=romance');
     log('books data');
@@ -62,10 +63,13 @@ class HomeCubit extends Cubit<HomeStates> {
           url: autoBooks.items![index].volumeInfo!.infoLink!,
           rate: autoBooks.items![index].volumeInfo!.averageRating,
           classEmotion: 'neutral',
-          imageUrl: autoBooks.items![index].volumeInfo!.imageLinks==null?'https://freevector-images.s3.amazonaws.com/uploads/vector/preview/36970/36970.png' :autoBooks.items![index].volumeInfo!.imageLinks!.thumbnail??'https://freevector-images.s3.amazonaws.com/uploads/vector/preview/36970/36970.png',
+          imageUrl: autoBooks.items![index].volumeInfo!.imageLinks == null
+              ? 'https://freevector-images.s3.amazonaws.com/uploads/vector/preview/36970/36970.png'
+              : autoBooks.items![index].volumeInfo!.imageLinks!.thumbnail ??
+                  'https://freevector-images.s3.amazonaws.com/uploads/vector/preview/36970/36970.png',
           usersFav: '');
-     BooksServices.instance.addBook(bookF);
-     // log(book.volumeInfo!.maturityRating.toString());
+      BooksServices.instance.addBook(bookF);
+      // log(book.volumeInfo!.maturityRating.toString());
     }
     log(autoBooks.items!.length.toString());
     //log(response.data.toString());
@@ -207,17 +211,27 @@ class HomeCubit extends Cubit<HomeStates> {
   }
 
 //Add post
-  Future<void> addPost(BuildContext context, String text, String mood) async {
+
+  Future<void> addPost(BuildContext context, String text, String mood,
+      {File? image}) async {
     try {
       final user = AppCubit.get(context).getUser;
+      String? urlImage;
       emit(AddPostLoadingState());
+      if (image != null) {
+        final imageCompressed =
+            await testCompressAndGetFile(image, quality: 50);
+        urlImage =
+            await FirebaseHelper.uploadFileTofireStorage(imageCompressed!);
+      }
       final inspirationItem = Inspiration.createNewInspirationn(
         text: text,
         date: DateTime.now().toIso8601String(),
         userName: user.name,
         userId: user.id,
-        userPic: 'userPic',
+        userPic: user.imagePath??'userPic',
         mood: mood,
+        imagePost: urlImage,
       );
       final postId = await FireStoreRepo.instance.inspirationServices
           .createInpirationItem(inspirationItem);

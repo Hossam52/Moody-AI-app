@@ -3,6 +3,7 @@
 // import 'package:mimic/presentation/resourses/font_manager.dart';
 
 import 'package:flutter/cupertino.dart';
+import 'package:moody_app/presentation/resources/color_manager.dart';
 
 class StyleManager 
 {
@@ -17,6 +18,10 @@ class StyleManager
         
       );
 }
+final linearGradient=  LinearGradient(
+            colors: [ColorManager.black, ColorManager.blackPosts],
+            begin: Alignment.topRight,
+            end: Alignment.bottomRight);
 
 // TextStyle _getTextStyle(
 //     double fontSize, String fontFamily, FontWeight fontWeight, Color color) {

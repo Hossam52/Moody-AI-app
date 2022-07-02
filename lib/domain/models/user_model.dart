@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'dart:developer';
 
 class UserModel {
   String id;
@@ -11,6 +10,7 @@ class UserModel {
   List<FollowingPreview> usersIdFollowing = [];
   List<String> likesPostIds;
   int followersCount;
+  String? imagePath;
   UserModel(
       {required this.id,
       required this.name,
@@ -19,6 +19,7 @@ class UserModel {
       required this.dateOfBirth,
       required this.usersIdFollowing,
       required this.likesPostIds,
+      required this.imagePath,
       required this.followersCount});
   factory UserModel.empty() {
     return UserModel(
@@ -29,6 +30,7 @@ class UserModel {
         dateOfBirth: 'dateOfBirth',
         usersIdFollowing: [],
         likesPostIds: [],
+        imagePath: 'imagePath',
         followersCount: 0);
   }
   List<String> get getFollowingFriendsIds {
@@ -61,6 +63,7 @@ class UserModel {
       'name': name,
       'email': email,
       'phone': phone,
+      'imagePath':imagePath,
       'dateOfBirth': dateOfBirth,
       'usersIdFollowing': usersIdFollowing.map((x) => x.toMap()).toList(),
       'likesPostIds': likesPostIds,
@@ -74,11 +77,10 @@ class UserModel {
       name: map['name'] ?? '',
       email: map['email'] ?? '',
       phone: map['phone'] ?? '',
+      imagePath: map['imagePath']??'',
       dateOfBirth: map['dateOfBirth'] ?? '',
-      usersIdFollowing:
-       List<FollowingPreview>.from(
-          map['usersIdFollowing']?.map((x) => FollowingPreview.fromMap(x))
-          ),
+      usersIdFollowing: List<FollowingPreview>.from(
+          map['usersIdFollowing']?.map((x) => FollowingPreview.fromMap(x))),
       likesPostIds: List<String>.from(map['likesPostIds']),
       followersCount: map['followersCount']?.toInt() ?? 0,
     );

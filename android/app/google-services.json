@@ -7,6 +7,35 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:233865090118:android:4911c53d4a63cffb0d2647",
+        "android_client_info": {
+          "package_name": "com.example.mood_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "233865090118-deqags0ubr8h208da1p474g4libkhq0u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbHwonYlMBIw4D7ddZqM2GdTSsxRYF1X4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "233865090118-deqags0ubr8h208da1p474g4libkhq0u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:233865090118:android:aa42bcbfa7f8430b0d2647",
         "android_client_info": {
           "package_name": "com.moody.app"

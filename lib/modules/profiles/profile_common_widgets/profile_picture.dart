@@ -4,8 +4,8 @@ import 'package:moody_app/shared/helper/helper_methods.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfilePicture extends StatelessWidget {
-  const ProfilePicture({Key? key}) : super(key: key);
-
+   ProfilePicture({Key? key,this.imagePath}) : super(key: key);
+   String? imagePath;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -14,7 +14,7 @@ class ProfilePicture extends StatelessWidget {
           border: Border.all(),
           borderRadius: BorderRadius.circular(15.r)),
       child: Image.asset(
-        AssetsManager.avater,
+        imagePath ?? AssetsManager.avater,
         fit: BoxFit.contain,
         width: getWidthFraction(context, 0.4),
         height: getHeightFraction(context, 0.15),

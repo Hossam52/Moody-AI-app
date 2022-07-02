@@ -9,6 +9,8 @@ import 'package:moody_app/shared/network/locale/cache_helper.dart';
 import 'app/myapp.dart';
 import 'package:bloc/bloc.dart';
 
+import 'shared/helper/helper_constants.dart';
+
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
@@ -20,15 +22,19 @@ class MyHttpOverrides extends HttpOverrides {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
- 
-  await Future.wait([Firebase.initializeApp(),CacheHelper.init(),
+
+  await Future.wait([
+    Firebase.initializeApp(),
+    CacheHelper.init(),
   ]);
   HttpOverrides.global = MyHttpOverrides();
-  isLogin =  CacheHelper.getDate(key: 'login') ?? false;
-  myMood =   CacheHelper.getDate(key: moodKey) ?? emotions.neutral.name;
+  isLogin = CacheHelper.getDate(key: 'login') ?? false;
+  if (isLogin) {
+    HelperConstants.userId = CacheHelper.getDate(key: 'uid');
+  }
+  myMood = CacheHelper.getDate(key: moodKey) ?? emotions.neutral.name;
   BlocOverrides.runZoned(
-    () 
-    {
+    () {
       runApp(MyApp());
     },
     blocObserver: CustomBlocObserver(),

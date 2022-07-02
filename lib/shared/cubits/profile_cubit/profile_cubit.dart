@@ -3,12 +3,11 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:moody_app/domain/models/inspiration.dart';
 import 'package:moody_app/domain/models/models.dart';
 import 'package:moody_app/shared/cubits/app_cubit/app_cubit.dart';
 import 'package:moody_app/shared/cubits/home_cubit/inspiration_data_class.dart';
 import 'package:moody_app/shared/network/firebase_services/services/firebase_firestore/fire_firestore.dart';
-import 'package:moody_app/shared/network/firebase_services/services/firebase_firestore/profile_services.dart';
+import 'package:moody_app/shared/network/firebase_services/services/firebase_firestore/inspiration_services.dart';
 import './profile_states.dart';
 
 //Bloc builder and bloc consumer methods
@@ -85,7 +84,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
       final user = AppCubit.get(context).getUser;
       emit(FollowFriendLoadingState());
       final friendPreview =
-          FollowingPreview(id: friend.id, name: friend.name, image: 'image2');
+          FollowingPreview(id: friend.id, name: friend.name, image: friend.imagePath!);
       await _firestore.profileServices.followFriend(
           myProfileId: user.id,
           friendId: friend.id,

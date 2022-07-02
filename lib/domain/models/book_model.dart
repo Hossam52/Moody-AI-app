@@ -141,9 +141,9 @@ class IndustryIdentifiers {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['type'] = this.type;
-    data['identifier'] = this.identifier;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['type'] = type;
+    data['identifier'] = identifier;
     return data;
   }
 }
@@ -160,9 +160,9 @@ class ReadingModes {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['text'] = this.text;
-    data['image'] = this.image;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['text'] = text;
+    data['image'] = image;
     return data;
   }
 }
@@ -179,9 +179,9 @@ class PanelizationSummary {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['containsEpubBubbles'] = this.containsEpubBubbles;
-    data['containsImageBubbles'] = this.containsImageBubbles;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['containsEpubBubbles'] = containsEpubBubbles;
+    data['containsImageBubbles'] = containsImageBubbles;
     return data;
   }
 }
@@ -223,34 +223,34 @@ class SaleInfo {
     saleability = json['saleability'];
     isEbook = json['isEbook'];
     listPrice = json['listPrice'] != null
-        ? new ListPriceBook.fromJson(json['listPrice'])
+        ? ListPriceBook.fromJson(json['listPrice'])
         : null;
     retailPrice = json['retailPrice'] != null
-        ? new ListPriceBook.fromJson(json['retailPrice'])
+        ? ListPriceBook.fromJson(json['retailPrice'])
         : null;
     buyLink = json['buyLink'];
     if (json['offers'] != null) {
       offers = <Offers>[];
       json['offers'].forEach((v) {
-        offers!.add(new Offers.fromJson(v));
+        offers!.add(Offers.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['country'] = this.country;
-    data['saleability'] = this.saleability;
-    data['isEbook'] = this.isEbook;
-    if (this.listPrice != null) {
-      data['listPrice'] = this.listPrice!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['country'] = country;
+    data['saleability'] = saleability;
+    data['isEbook'] = isEbook;
+    if (listPrice != null) {
+      data['listPrice'] = listPrice!.toJson();
     }
-    if (this.retailPrice != null) {
-      data['retailPrice'] = this.retailPrice!.toJson();
+    if (retailPrice != null) {
+      data['retailPrice'] = retailPrice!.toJson();
     }
-    data['buyLink'] = this.buyLink;
-    if (this.offers != null) {
-      data['offers'] = this.offers!.map((v) => v.toJson()).toList();
+    data['buyLink'] = buyLink;
+    if (offers != null) {
+      data['offers'] = offers!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -268,9 +268,9 @@ class ListPriceBook {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['amount'] = this.amount;
-    data['currencyCode'] = this.currencyCode;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['amount'] = amount;
+    data['currencyCode'] = currencyCode;
     return data;
   }
 }
@@ -285,21 +285,21 @@ class Offers {
   Offers.fromJson(Map<String, dynamic> json) {
     finskyOfferType = json['finskyOfferType'];
     listPrice = json['listPrice'] != null
-        ? new ListPriceBook.fromJson(json['listPrice'])
+        ? ListPriceBook.fromJson(json['listPrice'])
         : null;
     retailPrice = json['retailPrice'] != null
-        ? new ListPriceBook.fromJson(json['retailPrice'])
+        ? ListPriceBook.fromJson(json['retailPrice'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['finskyOfferType'] = this.finskyOfferType;
-    if (this.listPrice != null) {
-      data['listPrice'] = this.listPrice!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['finskyOfferType'] = finskyOfferType;
+    if (listPrice != null) {
+      data['listPrice'] = listPrice!.toJson();
     }
-    if (this.retailPrice != null) {
-      data['retailPrice'] = this.retailPrice!.toJson();
+    if (retailPrice != null) {
+      data['retailPrice'] = retailPrice!.toJson();
     }
     return data;
   }
@@ -335,29 +335,29 @@ class AccessInfo {
     embeddable = json['embeddable'];
     publicDomain = json['publicDomain'];
     textToSpeechPermission = json['textToSpeechPermission'];
-    epub = json['epub'] != null ? new Epub.fromJson(json['epub']) : null;
-    pdf = json['pdf'] != null ? new Epub.fromJson(json['pdf']) : null;
+    epub = json['epub'] != null ? Epub.fromJson(json['epub']) : null;
+    pdf = json['pdf'] != null ? Epub.fromJson(json['pdf']) : null;
     webReaderLink = json['webReaderLink'];
     accessViewStatus = json['accessViewStatus'];
     quoteSharingAllowed = json['quoteSharingAllowed'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['country'] = this.country;
-    data['viewability'] = this.viewability;
-    data['embeddable'] = this.embeddable;
-    data['publicDomain'] = this.publicDomain;
-    data['textToSpeechPermission'] = this.textToSpeechPermission;
-    if (this.epub != null) {
-      data['epub'] = this.epub!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['country'] = country;
+    data['viewability'] = viewability;
+    data['embeddable'] = embeddable;
+    data['publicDomain'] = publicDomain;
+    data['textToSpeechPermission'] = textToSpeechPermission;
+    if (epub != null) {
+      data['epub'] = epub!.toJson();
     }
-    if (this.pdf != null) {
-      data['pdf'] = this.pdf!.toJson();
+    if (pdf != null) {
+      data['pdf'] = pdf!.toJson();
     }
-    data['webReaderLink'] = this.webReaderLink;
-    data['accessViewStatus'] = this.accessViewStatus;
-    data['quoteSharingAllowed'] = this.quoteSharingAllowed;
+    data['webReaderLink'] = webReaderLink;
+    data['accessViewStatus'] = accessViewStatus;
+    data['quoteSharingAllowed'] = quoteSharingAllowed;
     return data;
   }
 }
@@ -374,9 +374,9 @@ class Epub {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['isAvailable'] = this.isAvailable;
-    data['acsTokenLink'] = this.acsTokenLink;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['isAvailable'] = isAvailable;
+    data['acsTokenLink'] = acsTokenLink;
     return data;
   }
 }
@@ -391,8 +391,8 @@ class SearchInfo {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['textSnippet'] = this.textSnippet;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['textSnippet'] = textSnippet;
     return data;
   }
 }

@@ -1,8 +1,7 @@
-import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:moody_app/domain/models/models.dart';
-import 'package:moody_app/shared/network/firebase_services/services/firebase_firestore/fire_firestore.dart';
+import 'package:moody_app/shared/network/firebase_services/services/firebase_firestore/inspiration_services.dart';
 
 class InspirationData {
   List<Inspiration>? _inspirationItems;

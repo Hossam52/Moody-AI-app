@@ -46,6 +46,10 @@ class BooksServices {
     }
     return _firestore.collection(FireStorePaths.booksPath).snapshots();
   }
+  Stream<QuerySnapshot<Map<String,dynamic>>>getAllBooksFav()
+  {
+    return  _firestore.collection(FireStorePaths.booksPath).snapshots();
+  }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getBestBooks() {
     switch (myMood) {

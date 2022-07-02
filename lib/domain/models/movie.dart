@@ -1,5 +1,5 @@
+import 'package:moody_app/shared/helper/helper_constants.dart';
 import 'package:moody_app/shared/network/firebase_services/services/firebase_firestore/movies_services.dart';
-import 'package:moody_app/shared/network/firebase_services/services/firebase_firestore/songs_services.dart';
 
 class Movie {
   final String description;
@@ -40,14 +40,14 @@ class Movie {
         duration: data['time'] ?? '',
         title: data['title'],
         id: data['id'],
-        url: data['url'] ?? 'amazon',
+        url: data['trailer_url'] ?? 'amazon',
         classEmotion: data['class'],
         category: data['category'],
         imageUrl: data['imageUrl'],
         usersFav: data['usersFav'] ?? '',
         numberOfFav: data['numberOfFav'] ?? 0);
 
-    song.isFav = song.usersFav.contains('1,');
+    song.isFav = song.usersFav.contains('${HelperConstants.userId},');
     return song;
   }
   void addToFavourite() async {
@@ -55,13 +55,13 @@ class Movie {
     String tempUsersFav = usersFav;
     int tempNumberOfFav = numberOfFav;
     try {
-      if (usersFav.contains('1,')) {
-        int firstIndex = usersFav.indexOf('1,');
+      if (usersFav.contains('${HelperConstants.userId},')) {
+        int firstIndex = usersFav.indexOf('${HelperConstants.userId},');
         numberOfFav--;
         usersFav = usersFav.replaceRange(firstIndex, firstIndex + 2, '');
         isFav = false;
       } else {
-        usersFav = usersFav + '1,';
+        usersFav = usersFav + '${HelperConstants.userId},';
         numberOfFav++;
         isFav = true;
       }
