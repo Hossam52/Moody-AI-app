@@ -21,6 +21,7 @@ import 'package:moody_app/widgets/default_text_button_with_icon.dart';
 import 'package:moody_app/widgets/default_text_field.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moody_app/widgets/loading_widget.dart';
+import 'package:image_picker/image_picker.dart';
 
 class InspirationScreen extends StatelessWidget {
   const InspirationScreen({Key? key}) : super(key: key);
@@ -220,7 +221,8 @@ class _AddPostWidgetState extends State<AddPostWidget> {
                             children: [
                               DefaultTextButtonWithIcon(
                                   onPressed: () async {
-                                    final file = await getImage();
+                                    final file = await getImage(
+                                        source: ImageSource.gallery);
                                     if (file != null) {
                                       image = file;
                                       HelperCubit.get(context).rebuild();

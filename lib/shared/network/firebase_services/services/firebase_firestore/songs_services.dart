@@ -11,7 +11,7 @@ class SongsServices {
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getAllSongs() {
     //class represent my mood
-    if (myMood == emotions.happy.name || myMood == emotions.sad.name) {
+    if (myMood == emotions.sad.name) {
       return _firestore
           .collection(FireStorePaths.songsPath)
           .where(
@@ -45,6 +45,7 @@ class SongsServices {
       case 'fear':
       case 'neutral':
       case 'surprise':
+      case 'happy':
         return _firestore
             .collection(FireStorePaths.songsPath)
             .where(

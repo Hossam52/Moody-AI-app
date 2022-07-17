@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moody_app/domain/enums/emotions.dart';
 import 'package:moody_app/modules/home/home_screen/cubit/home_cubit.dart';
 import 'package:moody_app/modules/home/home_screen/trand_post_item.dart';
 import 'package:moody_app/presentation/resources/color_manager.dart';
@@ -76,7 +77,11 @@ class HomeScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(10.r),
                                     ),
                                     child: Text(
-                                      'You must try and try to get rid of from this $myMood. You are strong',
+                                      emotions.angry.name==myMood?'There\'s nothing wrong with anger provided you use it constructively.'
+                                      :
+                                      emotions.sad.name==
+                                    myMood?'Life is too short to be anything but happy'
+                                    :'Nothing in life is to be feared. It is only to be understood.',
                                       style: StyleManager.primaryTextStyle(
                                           fontSize: FontSize.s19,
                                           fontWeight: FontWeightManager.medium,
@@ -84,7 +89,8 @@ class HomeScreen extends StatelessWidget {
                                     ),
                                   )
                                 : Column(
-                                    children: [
+                                    children: 
+                                    [
                                       TrendPostItem(
                                         inspiration:
                                             HomeCubit.get(context).inspiration!,
@@ -147,7 +153,7 @@ class HomeScreen extends StatelessWidget {
                               padding: EdgeInsets.symmetric(
                                   vertical: 10.h, horizontal: 45.w),
                               child: Text(
-                                'Watch',
+                                'Recommended ',
                                 style: StyleManager.primaryTextStyle(
                                     fontSize: FontSize.s20,
                                     fontWeight: FontWeightManager.medium,

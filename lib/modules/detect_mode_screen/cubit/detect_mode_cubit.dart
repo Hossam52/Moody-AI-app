@@ -55,12 +55,19 @@ class DetectModeCubit extends Cubit<DetectModeState> {
           onSendProgress: (s, w) {});
 
       log('Response');
-      await CacheHelper.saveDate(key: moodKey, value: response.data);
       //my mood
-      myMood = response.data;
-      log(response.data.toString());
-      emit(DetectModeSuccess('Your mode is $myMood'));
-    } catch (e) {
+      if (response.data != 'Couldn\'t detect a face') 
+      {
+        await CacheHelper.saveDate(key: moodKey, value: response.data);
+        myMood = response.data;
+        log(response.data.toString());
+        emit(DetectModeSuccess('Your mode is $myMood'));
+      } else 
+      {
+        emit(DetectModeSuccess('Couldn\'t detect a face'));
+      }
+    } catch (e) 
+    {
       emit(DetectModeError());
       rethrow;
     }

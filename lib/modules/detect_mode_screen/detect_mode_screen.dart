@@ -17,6 +17,7 @@ import 'package:moody_app/shared/helper/helper_methods.dart';
 import 'package:moody_app/shared/network/locale/cache_helper.dart';
 import 'package:moody_app/widgets/default_text_button.dart';
 import 'package:moody_app/widgets/loading_widget.dart';
+import 'package:image_picker/image_picker.dart';
 
 // ignore: must_be_immutable
 class DetectModeScreen extends StatelessWidget {
@@ -57,8 +58,78 @@ class DetectModeScreen extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () async {
-                      image = await getImage();
-                      if (image != null) HelperCubit.get(context).rebuild();
+                      await showDialog(
+                          context: context,
+                          builder: (_) {
+                            return AlertDialog(
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Center(
+                                    child: CircleAvatar(
+                                      child: Image.asset(
+                                          'assets/images/splash.png',
+                                          fit: BoxFit.fill),
+                                      // backgroundImage:
+                                      //     const AssetImage('assets/images/splash.png'),
+                                      backgroundColor: ColorManager.black,
+                                      radius: 60.r,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: AppSizes.sizeh10,
+                                  ),
+                                  ListTile(
+                                    onTap: () async {
+                                      Navigator.pop(context);
+
+                                      image = await getImage(
+                                          source: ImageSource.camera);
+                                      if (image != null)
+                                        HelperCubit.get(context).rebuild();
+                                    },
+                                    leading: Icon(
+                                      Icons.camera,
+                                      size: AppSizes.iconSize25,
+                                    ),
+                                    title: Text(
+                                      'From camera',
+                                      style: StyleManager.primaryTextStyle(
+                                          fontSize: FontSize.s18,
+                                          fontWeight: FontWeightManager.medium,
+                                          color: ColorManager.black),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: AppSizes.sizeh10,
+                                  ),
+                                  ListTile(
+                                    onTap: () async {
+                                      Navigator.pop(context);
+
+                                      image = await getImage(
+                                          source: ImageSource.gallery);
+                                      if (image != null)
+                                        HelperCubit.get(context).rebuild();
+
+                                      //selectedPicker = false;
+                                    },
+                                    leading: Icon(
+                                      Icons.image,
+                                      size: AppSizes.iconSize25,
+                                    ),
+                                    title: Text(
+                                      'From gallery',
+                                      style: StyleManager.primaryTextStyle(
+                                          fontSize: FontSize.s18,
+                                          fontWeight: FontWeightManager.medium,
+                                          color: ColorManager.black),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          });
                     },
                     focusColor: Colors.teal,
                     child: SizedBox(
@@ -125,8 +196,7 @@ class DetectModeScreen extends StatelessWidget {
                             );
 
                             //Navigator.pop(context);
-                            if (isHome) 
-                            {
+                            if (isHome) {
                               AppCubit.get(context).changeCurrentScreen(0);
                             }
                             Navigator.pushReplacement(
